@@ -1,0 +1,55 @@
+import { Callout, Tabs } from 'nextra/components'
+
+# OutsideClick
+
+Detects clicks outside of its children and fires a callback.
+
+Useful for closing dropdowns, modals, or popovers when the user
+clicks elsewhere on the page.
+
+## Props
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `onOutsideClick` | `() => void` | ✅ | Called when a click occurs outside the wrapped children. |
+| `children` | `ReactNode` | ✅ | Content to monitor for outside clicks. |
+
+## Usage
+
+<Tabs items={['After (flowify)', 'Before (imperative)']}>
+<Tabs.Tab>
+```tsx
+import { OutsideClick } from "flowify";
+
+const [open, setOpen] = useState(true);
+
+<OutsideClick onOutsideClick={() => setOpen(false)}>
+  <Dropdown />
+</OutsideClick>
+```
+</Tabs.Tab>
+<Tabs.Tab>
+```tsx
+const ref = useRef<HTMLDivElement>(null);
+
+useEffect(() => {
+  function handleMouseDown(e: MouseEvent) {
+    if (ref.current && !ref.current.contains(e.target as Node)) {
+      setOpen(false);
+    }
+  }
+  document.addEventListener("mousedown", handleMouseDown);
+  return () => document.removeEventListener("mousedown", handleMouseDown);
+}, []);
+
+<div ref={ref}>
+  <Dropdown />
+</div>
+```
+</Tabs.Tab>
+</Tabs>
+
+<Callout>
+Wraps children in a `<div>` element. If you need a different wrapper element,
+consider using the imperative pattern directly.
+</Callout>

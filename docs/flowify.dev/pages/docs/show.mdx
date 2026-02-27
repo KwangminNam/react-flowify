@@ -1,0 +1,35 @@
+import { Tabs } from 'nextra/components'
+
+# Show
+
+Conditionally renders children based on a **boolean condition**.
+
+A declarative replacement for `{condition && <Component />}` or
+ternary `{condition ? <A /> : <B />}` patterns.
+
+## Props
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `when` | `boolean` | ✅ | Condition to evaluate. |
+| `children` | `ReactNode` | ✅ | Rendered when `when` is `true`. |
+| `fallback` | `ReactNode` | | Rendered when `when` is `false`. Defaults to `null`. |
+
+## Usage
+
+<Tabs items={['After (flowify)', 'Before (imperative)']}>
+<Tabs.Tab>
+```tsx
+import { Show } from "flowify";
+
+<Show when={isLoggedIn} fallback={<LoginButton />}>
+  <Dashboard />
+</Show>
+```
+</Tabs.Tab>
+<Tabs.Tab>
+```tsx
+{isLoggedIn ? <Dashboard /> : <LoginButton />}
+```
+</Tabs.Tab>
+</Tabs>

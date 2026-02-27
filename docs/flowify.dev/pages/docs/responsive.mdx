@@ -1,0 +1,67 @@
+import { Tabs } from 'nextra/components'
+
+# Responsive
+
+Conditionally renders children based on a CSS media query.
+
+Uses `window.matchMedia` and listens for changes, re-rendering
+when the query match state changes.
+
+## Props
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `query` | `string` | ✅ | A CSS media query string. |
+| `children` | `ReactNode` | ✅ | Rendered when the query matches. |
+
+## Usage
+
+<Tabs items={['After (flowify)', 'Before (imperative)']}>
+<Tabs.Tab>
+```tsx
+import { Responsive } from "flowify";
+
+<Responsive query="(min-width: 1024px)">
+  <DesktopNav />
+</Responsive>
+```
+</Tabs.Tab>
+<Tabs.Tab>
+```tsx
+const [matches, setMatches] = useState(
+  () => window.matchMedia("(min-width: 1024px)").matches
+);
+
+useEffect(() => {
+  const mq = window.matchMedia("(min-width: 1024px)");
+  const handler = (e: MediaQueryListEvent) => setMatches(e.matches);
+  mq.addEventListener("change", handler);
+  return () => mq.removeEventListener("change", handler);
+}, []);
+
+{matches && <DesktopNav />}
+```
+</Tabs.Tab>
+</Tabs>
+
+## Compound Components
+
+### Responsive.Mobile
+
+Renders children only on mobile viewports (`max-width: 767px`).
+
+```tsx
+<Responsive.Mobile>
+  <MobileMenu />
+</Responsive.Mobile>
+```
+
+### Responsive.Desktop
+
+Renders children only on desktop viewports (`min-width: 768px`).
+
+```tsx
+<Responsive.Desktop>
+  <Sidebar />
+</Responsive.Desktop>
+```

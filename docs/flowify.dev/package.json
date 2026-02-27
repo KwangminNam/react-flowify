@@ -1,0 +1,22 @@
+{
+  "name": "flowify-docs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 4000",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^14.2.0",
+    "nextra": "^3.2.0",
+    "nextra-theme-docs": "^3.2.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "25.3.2",
+    "@types/react": "^18.3.0",
+    "typescript": "^5.7.0"
+  }
+}

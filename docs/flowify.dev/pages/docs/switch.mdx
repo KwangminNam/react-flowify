@@ -1,0 +1,53 @@
+import { Callout, Tabs } from 'nextra/components'
+
+# Switch\<T\>
+
+Renders content based on a value matching a key in the `by` record.
+
+A declarative replacement for `switch` statements or chained ternaries
+when selecting among multiple UI variants.
+
+## Props
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `value` | `NoInfer<T>` | ✅ | The current value to match against `by` keys. |
+| `by` | `Partial<Record<T, ReactNode>>` | ✅ | A record mapping possible values to their rendered content. |
+
+## Usage
+
+<Tabs items={['After (flowify)', 'Before (imperative)']}>
+<Tabs.Tab>
+```tsx
+import { Switch } from "flowify";
+
+type Status = "idle" | "loading" | "error" | "success";
+
+<Switch<Status>
+  value={status}
+  by={{
+    idle: <IdleView />,
+    loading: <Spinner />,
+    error: <ErrorView />,
+    success: <SuccessView />,
+  }}
+/>
+```
+</Tabs.Tab>
+<Tabs.Tab>
+```tsx
+{status === "idle" && <IdleView />}
+{status === "loading" && <Spinner />}
+{status === "error" && <ErrorView />}
+{status === "success" && <SuccessView />}
+```
+</Tabs.Tab>
+</Tabs>
+
+## Type Safety
+
+<Callout type="info">
+`Switch` uses `NoInfer<T>` on the `value` prop so the generic `T` is inferred
+from the `by` keys, not from the literal value. If a key is missing in `by`,
+it safely renders `null`.
+</Callout>

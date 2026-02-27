@@ -1,0 +1,34 @@
+import { Callout } from 'nextra/components'
+
+# Suspend
+
+Suspends indefinitely when rendered.
+
+Throws a never-resolving thenable, keeping the nearest `<Suspense>`
+boundary in its fallback state forever — useful for testing,
+storybook demonstrations, or placeholder layouts.
+
+## Usage
+
+```tsx
+import { Suspense } from "react";
+import { Suspend } from "flowify";
+
+<Suspense fallback={<Skeleton />}>
+  <Suspend />
+</Suspense>
+```
+
+## How it works
+
+Instead of throwing `new Promise(() => {})`, `Suspend` throws a minimal
+thenable object `{ then() {} }` that never resolves. This is lighter-weight
+and follows the same pattern used by [Suspensive](https://suspensive.org/docs/react/Suspend).
+
+## Use cases
+
+<Callout>
+- **Testing** — Verify that your `<Suspense>` fallback renders correctly.
+- **Storybook** — Show loading skeleton states in isolation.
+- **Placeholder layouts** — Keep a section in loading state while other parts of the UI are being built.
+</Callout>

@@ -1,0 +1,32 @@
+# Throw
+
+Immediately throws the provided error during render.
+
+Designed for use inside an `<ErrorBoundary>` to declaratively
+trigger error states — useful for testing or conditional error throwing.
+
+## Props
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `error` | `Error` | ✅ | The error object to throw. |
+
+## Usage
+
+```tsx
+import { Throw } from "flowify";
+import { ErrorBoundary } from "react-error-boundary";
+
+<ErrorBoundary fallbackRender={({ error }) => <p>{error.message}</p>}>
+  <Throw error={new Error("Something went wrong")} />
+</ErrorBoundary>
+```
+
+## Conditional throwing
+
+```tsx
+<ErrorBoundary fallbackRender={...}>
+  {shouldError && <Throw error={new Error("Oops")} />}
+  <NormalContent />
+</ErrorBoundary>
+```

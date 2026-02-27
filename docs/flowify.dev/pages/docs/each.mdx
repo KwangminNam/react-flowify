@@ -1,0 +1,59 @@
+import { Tabs } from 'nextra/components'
+
+# Each\<T\>
+
+Iterates over an array and renders each item via a render-prop.
+
+Supports an optional `separator` between items and a `renderEmpty`
+fallback when the array is empty.
+
+## Props
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `items` | `T[]` | ✅ | The array to iterate over. |
+| `children` | `(item: T, index: number) => ReactNode` | ✅ | Render function for each item. |
+| `separator` | `ReactNode` | | Rendered between items. |
+| `renderEmpty` | `ReactNode` | | Rendered when `items` is empty. Defaults to `null`. |
+
+## Usage
+
+<Tabs items={['After (flowify)', 'Before (imperative)']}>
+<Tabs.Tab>
+```tsx
+import { Each } from "flowify";
+
+<Each
+  items={users}
+  separator={<Divider />}
+  renderEmpty={<p>No users found.</p>}
+>
+  {(user, index) => <UserCard key={user.id} user={user} />}
+</Each>
+```
+</Tabs.Tab>
+<Tabs.Tab>
+```tsx
+{users.length === 0 ? (
+  <p>No users found.</p>
+) : (
+  users.map((user, index) => (
+    <Fragment key={user.id}>
+      {index > 0 && <Divider />}
+      <UserCard user={user} />
+    </Fragment>
+  ))
+)}
+```
+</Tabs.Tab>
+</Tabs>
+
+## Each.Separator
+
+A semantic marker component for separator content:
+
+```tsx
+<Each.Separator>
+  <hr />
+</Each.Separator>
+```
