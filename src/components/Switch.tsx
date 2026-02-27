@@ -1,10 +1,24 @@
-import type { ReactNode } from "react";
+import type { SwitchProps } from "../types";
 
-interface SwitchProps<T extends string | number> {
-  value: T;
-  by: Partial<Record<T, ReactNode>>;
-}
-
+/**
+ * Renders content based on a value matching a key in the `by` record.
+ *
+ * A declarative replacement for `switch` statements or chained ternaries
+ * when selecting among multiple UI variants.
+ *
+ * @example
+ * ```tsx
+ * <Switch
+ *   value={status}
+ *   by={{
+ *     idle: <IdleView />,
+ *     loading: <Spinner />,
+ *     error: <ErrorView />,
+ *     success: <SuccessView />,
+ *   }}
+ * />
+ * ```
+ */
 export function Switch<T extends string | number>({
   value,
   by,

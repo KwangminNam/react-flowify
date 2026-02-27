@@ -10,3 +10,23 @@ export { OutsideClick } from "./components/OutsideClick";
 export { Responsive } from "./components/Responsive";
 export { Throw } from "./components/Throw";
 export { Suspend } from "./components/Suspend";
+
+export type {
+  RenderProp,
+  IndexedRenderProp,
+  WithFallback,
+  WithChildren,
+  WithRenderProp,
+  WithIndexedRenderProp,
+  GuardProps,
+  ShowProps,
+  SwitchProps,
+  UseProps,
+  AsyncBoundaryProps,
+  TransitionProps,
+  DeferredProps,
+  EachProps,
+  OutsideClickProps,
+  ResponsiveProps,
+  ThrowProps,
+} from "./types";

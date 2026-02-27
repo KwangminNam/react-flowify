@@ -1,5 +1,10 @@
-const neverResolve = new Promise<never>(() => {});
+const infiniteThenable = { then() {} };
 
-export function Suspend(): never {
-  throw neverResolve;
-}
+export const Suspend = Object.assign(
+  (): null => {
+    throw infiniteThenable;
+  },
+  {
+    displayName: "Suspend",
+  }
+);

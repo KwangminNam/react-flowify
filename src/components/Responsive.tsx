@@ -1,9 +1,5 @@
-import { useState, useEffect, type ReactNode } from "react";
-
-interface ResponsiveProps {
-  query: string;
-  children: ReactNode;
-}
+import { useState, useEffect } from "react";
+import type { ResponsiveProps, WithChildren } from "../types";
 
 function useMediaQuery(query: string): boolean {
   const [matches, setMatches] = useState(() => {
@@ -28,18 +24,51 @@ function useMediaQuery(query: string): boolean {
   return matches;
 }
 
+/**
+ * Conditionally renders children based on a CSS media query.
+ *
+ * Uses `window.matchMedia` and listens for changes, re-rendering
+ * when the query match state changes.
+ *
+ * @example
+ * ```tsx
+ * <Responsive query="(min-width: 1024px)">
+ *   <DesktopNav />
+ * </Responsive>
+ * ```
+ */
 function ResponsiveBase({ query, children }: ResponsiveProps) {
   const matches = useMediaQuery(query);
   return matches ? <>{children}</> : null;
 }
 
-function Mobile({ children }: { children: ReactNode }) {
+/**
+ * Renders children only on mobile viewports (max-width: 767px).
+ *
+ * @example
+ * ```tsx
+ * <Responsive.Mobile>
+ *   <MobileMenu />
+ * </Responsive.Mobile>
+ * ```
+ */
+function Mobile({ children }: WithChildren) {
   return (
     <ResponsiveBase query="(max-width: 767px)">{children}</ResponsiveBase>
   );
 }
 
-function Desktop({ children }: { children: ReactNode }) {
+/**
+ * Renders children only on desktop viewports (min-width: 768px).
+ *
+ * @example
+ * ```tsx
+ * <Responsive.Desktop>
+ *   <Sidebar />
+ * </Responsive.Desktop>
+ * ```
+ */
+function Desktop({ children }: WithChildren) {
   return (
     <ResponsiveBase query="(min-width: 768px)">{children}</ResponsiveBase>
   );

@@ -1,46 +1,29 @@
 import { Fragment, type ReactNode } from "react";
+import type { EachProps, WithChildren } from "../types";
 
-interface EachProps<T> {
-  items: T[];
-  renderEmpty?: ReactNode;
-  children: (item: T, index: number) => ReactNode;
-}
-
+/**
+ * Iterates over an array and renders each item via a render-prop.
+ *
+ * Supports an optional `separator` between items and a `renderEmpty`
+ * fallback when the array is empty.
+ *
+ * @example
+ * ```tsx
+ * <Each
+ *   items={users}
+ *   separator={<Divider />}
+ *   renderEmpty={<p>No users found.</p>}
+ * >
+ *   {(user, index) => <UserCard key={user.id} user={user} />}
+ * </Each>
+ * ```
+ */
 function EachComponent<T>({
-  items,
-  renderEmpty = null,
-  children,
-}: EachProps<T>) {
-  if (items.length === 0) {
-    return <>{renderEmpty}</>;
-  }
-
-  return (
-    <>
-      {items.map((item, index) => (
-        <Fragment key={index}>{children(item, index)}</Fragment>
-      ))}
-    </>
-  );
-}
-
-function Separator({ children }: { children: ReactNode }) {
-  return <>{children}</>;
-}
-
-interface EachWithSeparatorProps<T> {
-  items: T[];
-  renderEmpty?: ReactNode;
-  separator?: ReactNode;
-  children: (item: T, index: number) => ReactNode;
-}
-
-function EachWithSeparator<T>({
   items,
   renderEmpty = null,
   separator,
   children,
-}: EachWithSeparatorProps<T>) {
+}: EachProps<T>) {
   if (items.length === 0) {
     return <>{renderEmpty}</>;
   }
@@ -57,6 +40,20 @@ function EachWithSeparator<T>({
   );
 }
 
-export const Each = Object.assign(EachWithSeparator, {
+/**
+ * A semantic marker component for separator content within `<Each>`.
+ *
+ * @example
+ * ```tsx
+ * <Each.Separator>
+ *   <hr />
+ * </Each.Separator>
+ * ```
+ */
+function Separator({ children }: WithChildren) {
+  return <>{children}</>;
+}
+
+export const Each = Object.assign(EachComponent, {
   Separator,
 });

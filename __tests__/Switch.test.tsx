@@ -31,13 +31,16 @@ describe("Switch", () => {
     expect(screen.getByText("Option B")).toBeInTheDocument();
   });
 
-  it("renders null when no value matches", () => {
+  it("renders null when value key is not provided in by", () => {
+    type Tab = "home" | "settings" | "about";
+    const currentTab: Tab = "about";
+
     const { container } = render(
-      <Switch
-        value="z"
+      <Switch<Tab>
+        value={currentTab}
         by={{
-          a: <span>Option A</span>,
-          b: <span>Option B</span>,
+          home: <span>Home</span>,
+          settings: <span>Settings</span>,
         }}
       />
     );
