@@ -1,6 +1,6 @@
 {
   "name": "react-flowify",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Declarative JSX components replacing React imperative patterns",
   "type": "module",
   "main": "./dist/index.cjs",
