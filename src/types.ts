@@ -72,7 +72,7 @@ export interface AsyncBoundaryProps extends PropsWithChildren {
 }
 
 export interface EachProps<T> {
-  items: T[];
+  items: readonly T[];
   children: (item: T, meta: EachItemMeta) => ReactNode;
   renderEmpty?: ReactNode;
 }
