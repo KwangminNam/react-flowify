@@ -3,9 +3,6 @@ export { Show } from "./components/Show";
 export { Switch } from "./components/Switch";
 export { Use } from "./components/Use";
 export { AsyncBoundary } from "./components/AsyncBoundary";
-export { Transition } from "./components/Transition";
-export { Deferred } from "./components/Deferred";
-export { Concurrent } from "./components/Concurrent";
 export { Each } from "./components/Each";
 export { OutsideClick } from "./components/OutsideClick";
 export { Responsive } from "./components/Responsive";
@@ -16,7 +13,6 @@ export type {
   RenderProp,
   IndexedRenderProp,
   WithFallback,
-  WithChildren,
   WithRenderProp,
   WithIndexedRenderProp,
   GuardProps,
@@ -24,9 +20,8 @@ export type {
   SwitchProps,
   UseProps,
   AsyncBoundaryProps,
-  TransitionProps,
-  DeferredProps,
   EachProps,
+  EachItemMeta,
   OutsideClickProps,
   ResponsiveProps,
   ThrowProps,

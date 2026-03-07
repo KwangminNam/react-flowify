@@ -26,7 +26,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "changeset": "changeset",
-    "release": "pnpm build && changeset publish"
+    "release": "pnpm build && changeset publish",
+    "version": "changeset version"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -56,6 +57,15 @@
     "flowify"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KwangminNam/flowify.git"
+  },
+  "homepage": "https://github.com/KwangminNam/flowify#readme",
+  "bugs": {
+    "url": "https://github.com/KwangminNam/flowify/issues"
+  },
+  "author": "KwangminNam",
   "sideEffects": false,
   "pnpm": {
     "onlyBuiltDependencies": [

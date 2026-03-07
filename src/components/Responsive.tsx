@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import type { ResponsiveProps, WithChildren } from "../types";
+import { useState, useEffect, type PropsWithChildren } from "react";
+import type { ResponsiveProps } from "../types";
 
 function useMediaQuery(query: string): boolean {
   const [matches, setMatches] = useState(() => {
@@ -27,9 +27,6 @@ function useMediaQuery(query: string): boolean {
 /**
  * Conditionally renders children based on a CSS media query.
  *
- * Uses `window.matchMedia` and listens for changes, re-rendering
- * when the query match state changes.
- *
  * @example
  * ```tsx
  * <Responsive query="(min-width: 1024px)">
@@ -43,34 +40,38 @@ function ResponsiveBase({ query, children }: ResponsiveProps) {
 }
 
 /**
- * Renders children only on mobile viewports (max-width: 767px).
+ * Renders children only on mobile viewports.
+ * Default: max-width 767px. Override with `breakpoint`.
  *
  * @example
  * ```tsx
- * <Responsive.Mobile>
- *   <MobileMenu />
- * </Responsive.Mobile>
+ * <Responsive.Mobile>Phone UI</Responsive.Mobile>
+ * <Responsive.Mobile breakpoint={639}>Small phone only</Responsive.Mobile>
  * ```
  */
-function Mobile({ children }: WithChildren) {
+function Mobile({ children, breakpoint = 767 }: PropsWithChildren & { breakpoint?: number }) {
   return (
-    <ResponsiveBase query="(max-width: 767px)">{children}</ResponsiveBase>
+    <ResponsiveBase query={`(max-width: ${breakpoint}px)`}>
+      {children}
+    </ResponsiveBase>
   );
 }
 
 /**
- * Renders children only on desktop viewports (min-width: 768px).
+ * Renders children only on desktop viewports.
+ * Default: min-width 768px. Override with `breakpoint`.
  *
  * @example
  * ```tsx
- * <Responsive.Desktop>
- *   <Sidebar />
- * </Responsive.Desktop>
+ * <Responsive.Desktop>Desktop UI</Responsive.Desktop>
+ * <Responsive.Desktop breakpoint={1024}>Large screens only</Responsive.Desktop>
  * ```
  */
-function Desktop({ children }: WithChildren) {
+function Desktop({ children, breakpoint = 768 }: PropsWithChildren & { breakpoint?: number }) {
   return (
-    <ResponsiveBase query="(min-width: 768px)">{children}</ResponsiveBase>
+    <ResponsiveBase query={`(min-width: ${breakpoint}px)`}>
+      {children}
+    </ResponsiveBase>
   );
 }
 

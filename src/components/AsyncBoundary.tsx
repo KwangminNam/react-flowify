@@ -5,19 +5,20 @@ import type { AsyncBoundaryProps } from "../types";
 /**
  * Combines React `<Suspense>` and `<ErrorBoundary>` into a single declarative boundary.
  *
- * Handles both pending (loading) and rejected (error) states of async children,
- * reducing boilerplate when using async components or `<Use>`.
- *
  * @example
  * ```tsx
  * <AsyncBoundary
- *   pendingFallback={<Skeleton />}
- *   rejectedFallback={({ error, resetErrorBoundary }) => (
- *     <div>
- *       <p>Error: {error.message}</p>
- *       <button onClick={resetErrorBoundary}>Retry</button>
- *     </div>
- *   )}
+ *   suspense={{ fallback: <Skeleton /> }}
+ *   errorBoundary={{
+ *     fallbackRender: ({ error, resetErrorBoundary }) => (
+ *       <div>
+ *         <p>Error: {error.message}</p>
+ *         <button onClick={resetErrorBoundary}>Retry</button>
+ *       </div>
+ *     ),
+ *     onError: (error) => console.error(error),
+ *     resetKeys: [queryKey],
+ *   }}
  * >
  *   <Use promise={fetchData()}>
  *     {(data) => <DataView data={data} />}
@@ -26,18 +27,16 @@ import type { AsyncBoundaryProps } from "../types";
  * ```
  */
 export function AsyncBoundary({
-  pendingFallback,
-  rejectedFallback,
+  suspense,
+  errorBoundary,
   children,
 }: AsyncBoundaryProps) {
   return (
     <ErrorBoundary
-      fallbackRender={
-        rejectedFallback ??
-        (({ error }) => <span>Error: {String(error)}</span>)
-      }
+      {...errorBoundary}
+      fallbackRender={errorBoundary?.fallbackRender ?? (({ error }) => <>{error.message}</>)}
     >
-      <Suspense fallback={pendingFallback}>{children}</Suspense>
+      <Suspense fallback={suspense?.fallback}>{children}</Suspense>
     </ErrorBoundary>
   );
 }

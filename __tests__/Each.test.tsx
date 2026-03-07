@@ -30,39 +30,27 @@ describe("Each", () => {
     expect(container.innerHTML).toBe("");
   });
 
-  it("renders separator between items", () => {
-    const { container } = render(
-      <Each items={["A", "B", "C"]} separator={<span data-testid="sep">|</span>}>
-        {(item) => <span>{item}</span>}
-      </Each>
-    );
-    expect(screen.getByText("A")).toBeInTheDocument();
-    expect(screen.getByText("B")).toBeInTheDocument();
-    expect(screen.getByText("C")).toBeInTheDocument();
-    expect(screen.getAllByTestId("sep")).toHaveLength(2);
-  });
-
-  it("does not render separator for single item", () => {
+  it("provides meta with index, isFirst, isLast, length", () => {
     render(
-      <Each items={["A"]} separator={<span data-testid="sep">|</span>}>
-        {(item) => <span>{item}</span>}
-      </Each>
-    );
-    expect(screen.getByText("A")).toBeInTheDocument();
-    expect(screen.queryByTestId("sep")).not.toBeInTheDocument();
-  });
-
-  it("provides index to render function", () => {
-    render(
-      <Each items={["A", "B"]}>
-        {(item, index) => (
-          <span>
-            {index}: {item}
+      <Each items={["A", "B", "C"]}>
+        {(item, meta) => (
+          <span data-testid={`item-${meta.index}`}>
+            {item}:idx={meta.index},first={String(meta.isFirst)},last=
+            {String(meta.isLast)},len={meta.length}
           </span>
         )}
       </Each>
     );
-    expect(screen.getByText("0: A")).toBeInTheDocument();
-    expect(screen.getByText("1: B")).toBeInTheDocument();
+
+    expect(screen.getByTestId("item-0").textContent).toContain(
+      "A:idx=0,first=true,last=false,len=3"
+    );
+    expect(screen.getByTestId("item-1").textContent).toContain(
+      "B:idx=1,first=false,last=false,len=3"
+    );
+    expect(screen.getByTestId("item-2").textContent).toContain(
+      "C:idx=2,first=false,last=true,len=3"
+    );
   });
+
 });

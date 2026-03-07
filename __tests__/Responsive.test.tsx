@@ -49,26 +49,6 @@ describe("Responsive", () => {
     expect(container.innerHTML).toBe("");
   });
 
-  it("Responsive.Mobile renders for mobile query match", () => {
-    matchesMap.set("(max-width: 767px)", true);
-    render(
-      <Responsive.Mobile>
-        <span>Mobile content</span>
-      </Responsive.Mobile>
-    );
-    expect(screen.getByText("Mobile content")).toBeInTheDocument();
-  });
-
-  it("Responsive.Desktop renders for desktop query match", () => {
-    matchesMap.set("(min-width: 768px)", true);
-    render(
-      <Responsive.Desktop>
-        <span>Desktop content</span>
-      </Responsive.Desktop>
-    );
-    expect(screen.getByText("Desktop content")).toBeInTheDocument();
-  });
-
   it("responds to media query changes", () => {
     matchesMap.set("(min-width: 768px)", false);
     const { container } = render(
@@ -86,5 +66,45 @@ describe("Responsive", () => {
     });
 
     expect(screen.getByText("Desktop")).toBeInTheDocument();
+  });
+
+  it("Responsive.Mobile renders with default breakpoint (767px)", () => {
+    matchesMap.set("(max-width: 767px)", true);
+    render(
+      <Responsive.Mobile>
+        <span>Mobile</span>
+      </Responsive.Mobile>
+    );
+    expect(screen.getByText("Mobile")).toBeInTheDocument();
+  });
+
+  it("Responsive.Mobile accepts custom breakpoint", () => {
+    matchesMap.set("(max-width: 639px)", true);
+    render(
+      <Responsive.Mobile breakpoint={639}>
+        <span>Small mobile</span>
+      </Responsive.Mobile>
+    );
+    expect(screen.getByText("Small mobile")).toBeInTheDocument();
+  });
+
+  it("Responsive.Desktop renders with default breakpoint (768px)", () => {
+    matchesMap.set("(min-width: 768px)", true);
+    render(
+      <Responsive.Desktop>
+        <span>Desktop</span>
+      </Responsive.Desktop>
+    );
+    expect(screen.getByText("Desktop")).toBeInTheDocument();
+  });
+
+  it("Responsive.Desktop accepts custom breakpoint", () => {
+    matchesMap.set("(min-width: 1024px)", true);
+    render(
+      <Responsive.Desktop breakpoint={1024}>
+        <span>Large desktop</span>
+      </Responsive.Desktop>
+    );
+    expect(screen.getByText("Large desktop")).toBeInTheDocument();
   });
 });

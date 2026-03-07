@@ -8,8 +8,10 @@ describe("AsyncBoundary", () => {
   it("renders children normally", () => {
     render(
       <AsyncBoundary
-        pendingFallback={<span>Loading...</span>}
-        rejectedFallback={({ error }) => <span>Error: {error.message}</span>}
+        suspense={{ fallback: <span>Loading...</span> }}
+        errorBoundary={{
+          fallbackRender: ({ error }) => <span>Error: {error.message}</span>,
+        }}
       >
         <span>Content</span>
       </AsyncBoundary>
@@ -17,30 +19,53 @@ describe("AsyncBoundary", () => {
     expect(screen.getByText("Content")).toBeInTheDocument();
   });
 
-  it("renders pendingFallback when children suspend", () => {
+  it("renders suspense fallback when children suspend", () => {
     render(
-      <AsyncBoundary
-        pendingFallback={<span>Loading...</span>}
-        rejectedFallback={({ error }) => <span>Error: {error.message}</span>}
-      >
+      <AsyncBoundary suspense={{ fallback: <span>Loading...</span> }}>
         <Suspend />
       </AsyncBoundary>
     );
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  it("renders rejectedFallback when children throw", () => {
+  it("renders errorBoundary fallback when children throw", () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
 
     render(
       <AsyncBoundary
-        pendingFallback={<span>Loading...</span>}
-        rejectedFallback={({ error }) => <span>Caught: {error.message}</span>}
+        errorBoundary={{
+          fallbackRender: ({ error }) => (
+            <span>Caught: {error.message}</span>
+          ),
+        }}
       >
         <Throw error={new Error("Test error")} />
       </AsyncBoundary>
     );
     expect(screen.getByText("Caught: Test error")).toBeInTheDocument();
+
+    vi.restoreAllMocks();
+  });
+
+  it("calls onError when children throw", () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const onError = vi.fn();
+
+    render(
+      <AsyncBoundary
+        errorBoundary={{
+          fallbackRender: () => <span>Error</span>,
+          onError,
+        }}
+      >
+        <Throw error={new Error("Test error")} />
+      </AsyncBoundary>
+    );
+
+    expect(onError).toHaveBeenCalledWith(
+      expect.objectContaining({ message: "Test error" }),
+      expect.objectContaining({ componentStack: expect.any(String) })
+    );
 
     vi.restoreAllMocks();
   });
@@ -56,10 +81,7 @@ describe("AsyncBoundary", () => {
 
     await act(async () => {
       render(
-        <AsyncBoundary
-          pendingFallback={<span>Loading...</span>}
-          rejectedFallback={({ error }) => <span>Error: {error.message}</span>}
-        >
+        <AsyncBoundary suspense={{ fallback: <span>Loading...</span> }}>
           <AsyncChild />
         </AsyncBoundary>
       );

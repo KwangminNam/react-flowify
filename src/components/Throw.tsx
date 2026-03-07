@@ -16,3 +16,4 @@ import type { ThrowProps } from "../types";
 export function Throw({ error }: ThrowProps): never {
   throw error;
 }
+

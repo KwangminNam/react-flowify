@@ -1,4 +1,4 @@
-import type { ReactNode, TransitionStartFunction } from "react";
+import type { ErrorInfo, PropsWithChildren, ReactNode } from "react";
 import type { FallbackProps } from "react-error-boundary";
 
 // ──────────────────────────────────────────────
@@ -11,6 +11,15 @@ export type RenderProp<T> = (value: T) => ReactNode;
 /** A render function that receives a value and its index, returns JSX. */
 export type IndexedRenderProp<T> = (value: T, index: number) => ReactNode;
 
+/** Metadata about the current item's position in an iteration. */
+export interface EachItemMeta {
+  index: number;
+  isFirst: boolean;
+  isLast: boolean;
+  length: number;
+}
+
+
 // ──────────────────────────────────────────────
 // Common prop patterns
 // ──────────────────────────────────────────────
@@ -18,11 +27,6 @@ export type IndexedRenderProp<T> = (value: T, index: number) => ReactNode;
 /** Props that include an optional fallback ReactNode. */
 export interface WithFallback {
   fallback?: ReactNode;
-}
-
-/** Props that accept static children (ReactNode). */
-export interface WithChildren {
-  children: ReactNode;
 }
 
 /** Props that accept a render-prop children with a single argument. */
@@ -44,7 +48,7 @@ export interface GuardProps<T> extends WithFallback {
   children: RenderProp<NonNullable<T>>;
 }
 
-export interface ShowProps extends WithFallback, WithChildren {
+export interface ShowProps extends WithFallback, PropsWithChildren {
   when: boolean;
 }
 
@@ -57,35 +61,30 @@ export interface UseProps<T> extends WithRenderProp<T> {
   promise: Promise<T>;
 }
 
-export interface AsyncBoundaryProps extends WithChildren {
-  pendingFallback?: ReactNode;
-  rejectedFallback?: (props: FallbackProps) => ReactNode;
+export interface AsyncBoundaryProps extends PropsWithChildren {
+  suspense?: { fallback?: ReactNode };
+  errorBoundary?: {
+    fallbackRender: (props: FallbackProps) => ReactNode;
+    onError?: (error: Error, info: ErrorInfo) => void;
+    onReset?: (details: { reason: "imperative-api"; args: unknown[] } | { reason: "keys"; prev: unknown[] | undefined; next: unknown[] | undefined }) => void;
+    resetKeys?: unknown[];
+  };
 }
 
-export interface TransitionProps extends WithFallback {
-  children: (
-    isPending: boolean,
-    startTransition: TransitionStartFunction
-  ) => ReactNode;
-}
-
-export interface DeferredProps<T> extends WithRenderProp<T> {
-  value: T;
-}
-
-export interface EachProps<T> extends WithIndexedRenderProp<T> {
+export interface EachProps<T> {
   items: T[];
+  children: (item: T, meta: EachItemMeta) => ReactNode;
   renderEmpty?: ReactNode;
-  separator?: ReactNode;
 }
 
-export interface OutsideClickProps extends WithChildren {
+export interface OutsideClickProps extends PropsWithChildren {
   onOutsideClick: () => void;
 }
 
-export interface ResponsiveProps extends WithChildren {
+export interface ResponsiveProps extends PropsWithChildren {
   query: string;
 }
+
 
 export interface ThrowProps {
   error: Error;

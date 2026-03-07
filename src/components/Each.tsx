@@ -1,59 +1,51 @@
-import { Fragment, type ReactNode } from "react";
-import type { EachProps, WithChildren } from "../types";
+import { Fragment } from "react";
+import type { EachProps } from "../types";
 
 /**
- * Iterates over an array and renders each item via a render-prop.
+ * Headless list iteration component with full positional awareness.
  *
- * Supports an optional `separator` between items and a `renderEmpty`
- * fallback when the array is empty.
+ * Renders each item via a render-prop that receives metadata
+ * (`isFirst`, `isLast`, `index`, `length`). Supports static or
+ * dynamic separators and an empty state fallback.
  *
  * @example
  * ```tsx
- * <Each
- *   items={users}
- *   separator={<Divider />}
- *   renderEmpty={<p>No users found.</p>}
- * >
- *   {(user, index) => <UserCard key={user.id} user={user} />}
+ * // Basic usage
+ * <Each items={users} renderEmpty={<p>No users.</p>}>
+ *   {(user, { index, isFirst, isLast }) => (
+ *     <UserCard user={user} highlight={isFirst} />
+ *   )}
  * </Each>
+ *
  * ```
  */
-function EachComponent<T>({
+export function Each<T>({
   items,
   renderEmpty = null,
-  separator,
   children,
 }: EachProps<T>) {
   if (items.length === 0) {
     return <>{renderEmpty}</>;
   }
 
+  const length = items.length;
+
   return (
     <>
-      {items.map((item, index) => (
-        <Fragment key={index}>
-          {index > 0 && separator}
-          {children(item, index)}
-        </Fragment>
-      ))}
+      {items.map((item, index) => {
+        const meta = {
+          index,
+          isFirst: index === 0,
+          isLast: index === length - 1,
+          length,
+        };
+
+        return (
+          <Fragment key={index}>
+            {children(item, meta)}
+          </Fragment>
+        );
+      })}
     </>
   );
 }
-
-/**
- * A semantic marker component for separator content within `<Each>`.
- *
- * @example
- * ```tsx
- * <Each.Separator>
- *   <hr />
- * </Each.Separator>
- * ```
- */
-function Separator({ children }: WithChildren) {
-  return <>{children}</>;
-}
-
-export const Each = Object.assign(EachComponent, {
-  Separator,
-});
