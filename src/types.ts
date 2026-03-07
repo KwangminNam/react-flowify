@@ -63,8 +63,8 @@ export interface UseProps<T> extends WithRenderProp<T> {
 
 export interface AsyncBoundaryProps extends PropsWithChildren {
   suspense?: { fallback?: ReactNode };
-  errorBoundary?: {
-    fallbackRender: (props: FallbackProps) => ReactNode;
+  errorBoundary: {
+    fallback: ReactNode;
     onError?: (error: Error, info: ErrorInfo) => void;
     onReset?: (details: { reason: "imperative-api"; args: unknown[] } | { reason: "keys"; prev: unknown[] | undefined; next: unknown[] | undefined }) => void;
     resetKeys?: unknown[];

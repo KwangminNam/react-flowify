@@ -9,9 +9,7 @@ describe("AsyncBoundary", () => {
     render(
       <AsyncBoundary
         suspense={{ fallback: <span>Loading...</span> }}
-        errorBoundary={{
-          fallbackRender: ({ error }) => <span>Error: {error.message}</span>,
-        }}
+        errorBoundary={{ fallback: <span>Error occurred</span> }}
       >
         <span>Content</span>
       </AsyncBoundary>
@@ -21,7 +19,10 @@ describe("AsyncBoundary", () => {
 
   it("renders suspense fallback when children suspend", () => {
     render(
-      <AsyncBoundary suspense={{ fallback: <span>Loading...</span> }}>
+      <AsyncBoundary
+        suspense={{ fallback: <span>Loading...</span> }}
+        errorBoundary={{ fallback: <span>Error</span> }}
+      >
         <Suspend />
       </AsyncBoundary>
     );
@@ -33,16 +34,12 @@ describe("AsyncBoundary", () => {
 
     render(
       <AsyncBoundary
-        errorBoundary={{
-          fallbackRender: ({ error }) => (
-            <span>Caught: {error.message}</span>
-          ),
-        }}
+        errorBoundary={{ fallback: <span>Caught error</span> }}
       >
         <Throw error={new Error("Test error")} />
       </AsyncBoundary>
     );
-    expect(screen.getByText("Caught: Test error")).toBeInTheDocument();
+    expect(screen.getByText("Caught error")).toBeInTheDocument();
 
     vi.restoreAllMocks();
   });
@@ -54,7 +51,7 @@ describe("AsyncBoundary", () => {
     render(
       <AsyncBoundary
         errorBoundary={{
-          fallbackRender: () => <span>Error</span>,
+          fallback: <span>Error</span>,
           onError,
         }}
       >
@@ -81,7 +78,10 @@ describe("AsyncBoundary", () => {
 
     await act(async () => {
       render(
-        <AsyncBoundary suspense={{ fallback: <span>Loading...</span> }}>
+        <AsyncBoundary
+          suspense={{ fallback: <span>Loading...</span> }}
+          errorBoundary={{ fallback: <span>Error</span> }}
+        >
           <AsyncChild />
         </AsyncBoundary>
       );

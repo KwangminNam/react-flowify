@@ -32,10 +32,7 @@ export function AsyncBoundary({
   children,
 }: AsyncBoundaryProps) {
   return (
-    <ErrorBoundary
-      {...errorBoundary}
-      fallbackRender={errorBoundary?.fallbackRender ?? (({ error }) => <>{error.message}</>)}
-    >
+    <ErrorBoundary {...errorBoundary}>
       <Suspense fallback={suspense?.fallback}>{children}</Suspense>
     </ErrorBoundary>
   );
