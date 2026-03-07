@@ -1,5 +1,5 @@
 {
-  "name": "flowify",
+  "name": "react-flowify",
   "version": "0.0.1",
   "description": "Declarative JSX components replacing React imperative patterns",
   "type": "module",
