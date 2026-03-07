@@ -1,5 +1,11 @@
 # react-flowify
 
+## 0.1.2
+
+### Patch Changes
+
+- a7d21b7: Support readonly arrays in Each component items prop
+
 ## 0.1.1
 
 ### Patch Changes
