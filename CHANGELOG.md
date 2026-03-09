@@ -1,5 +1,11 @@
 # react-flowify
 
+## 0.1.3
+
+### Patch Changes
+
+- e6bdd64: fix: update peerDependencies to require react >= 19 and add README documentation
+
 ## 0.1.2
 
 ### Patch Changes
