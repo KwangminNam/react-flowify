@@ -30,10 +30,6 @@
     "version": "changeset version"
   },
   "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18"
-  },
-  "peerDependencies": {
     "react": ">=19",
     "react-dom": ">=19"
   },
