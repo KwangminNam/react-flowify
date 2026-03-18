@@ -6,5 +6,10 @@ export default defineConfig({
   dts: true,
   splitting: false,
   clean: true,
-  external: ["react", "react-dom"],
+  minify: true,
+  target: "es2020",
+  external: ["react", "react-dom", "react-error-boundary"],
+  banner: {
+    js: '"use client";',
+  },
 });

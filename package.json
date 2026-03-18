@@ -23,6 +23,7 @@
   ],
   "scripts": {
     "build": "tsup",
+    "size": "pnpm build && echo '--- Bundle Size ---' && ls -lh dist/index.js dist/index.cjs | awk '{print $NF, $5}' && echo '--- Gzipped ---' && gzip -c dist/index.js | wc -c | xargs -I{} echo 'index.js (gzip): {} bytes' && gzip -c dist/index.cjs | wc -c | xargs -I{} echo 'index.cjs (gzip): {} bytes'",
     "test": "vitest run",
     "test:watch": "vitest",
     "changeset": "changeset",
