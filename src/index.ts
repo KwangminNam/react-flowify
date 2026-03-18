@@ -8,6 +8,7 @@ export { OutsideClick } from "./components/OutsideClick";
 export { Responsive } from "./components/Responsive";
 export { Throw } from "./components/Throw";
 export { Suspend } from "./components/Suspend";
+export { FormStatus } from "./components/FormStatus";
 
 export type {
   RenderProp,
@@ -25,4 +26,5 @@ export type {
   OutsideClickProps,
   ResponsiveProps,
   ThrowProps,
+  FormStatusProps,
 } from "./types";

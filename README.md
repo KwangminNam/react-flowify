@@ -326,6 +326,58 @@ useEffect(() => {
 
 ---
 
+### FormStatus
+
+React 19의 `useFormStatus()`를 render prop으로 노출하여, `<form>` 안에서 제출 상태를 읽기 위해 별도 컴포넌트를 분리하지 않아도 되게 합니다.
+
+기존에는 `useFormStatus()`가 반드시 `<form>`의 자식 컴포넌트 안에서만 호출할 수 있어서, `pending` 상태 하나를 읽으려고도 컴포넌트를 억지로 분리해야 했습니다. `FormStatus`는 이 제약을 render prop 패턴으로 해결하여, form 내부에서 인라인으로 제출 상태를 사용할 수 있게 합니다.
+
+**AS-IS**
+```tsx
+// useFormStatus()를 쓰기 위해 별도 컴포넌트를 만들어야 함
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return <button disabled={pending}>{pending ? '저장 중...' : '저장'}</button>;
+}
+
+function MyForm() {
+  return (
+    <form action={action}>
+      <input name="title" />
+      <SubmitButton />
+    </form>
+  );
+}
+```
+
+**TO-BE**
+```tsx
+// pending만 쓸 때
+<form action={action}>
+  <input name="title" />
+  <FormStatus>
+    {({ pending }) => (
+      <button disabled={pending}>저장</button>
+    )}
+  </FormStatus>
+</form>
+
+// 모든 상태 필드를 쓸 때
+<form action={action}>
+  <input name="title" />
+  <FormStatus>
+    {({ pending, data, method, action }) => (
+      <>
+        <button disabled={pending}>저장</button>
+        <p>{data?.get('title')}으로 저장 중...</p>
+      </>
+    )}
+  </FormStatus>
+</form>
+```
+
+---
+
 ### Throw
 
 렌더 시점에 즉시 에러를 throw합니다.

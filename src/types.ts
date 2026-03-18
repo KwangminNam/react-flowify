@@ -89,3 +89,7 @@ export interface ResponsiveProps extends PropsWithChildren {
 export interface ThrowProps {
   error: Error;
 }
+
+export interface FormStatusProps {
+  children: RenderProp<import("react-dom").FormStatus>;
+}
